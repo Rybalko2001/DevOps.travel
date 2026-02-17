@@ -47,9 +47,11 @@ Includes Docker and Kubernetes health checks.
 ├── README.md
 ├── docker-compose.yml
 ├── .env.example
+├── .env
 ├── Makefile
 ├── nginx/
 │   └── nginx.conf
+│   └── Dockerfile
 ├── app/
 │   ├── Dockerfile
 │   └── app.py
@@ -64,8 +66,8 @@ Includes Docker and Kubernetes health checks.
 # Prerequisites
 
 ## Required
-- Docker (>= 20.x)
-- Docker Compose v2
+- Docker 
+- Docker Compose 
 
 ## Bonus (Kubernetes)
 - kind
@@ -328,6 +330,25 @@ Expected:
 ```json
 {"status":"ok","service":"app","env":"local"}
 ```
+
+---
+
+## 6. Port Forwarding (Kubernetes)
+
+If you want to access the service directly without Ingress or if your cluster does not expose Ingress on localhost:
+
+```bash
+kubectl port-forward svc/app 8080:80
+```
+
+Then you can access the service locally:
+
+```bash
+curl http://localhost:8080/healthz
+```
+
+- Maps **local port 8080** → **Service port 80** in cluster
+- Useful for testing/debugging without full Ingress setup
 
 ---
 
